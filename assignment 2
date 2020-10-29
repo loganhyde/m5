@@ -1,0 +1,254 @@
+//-------------------- global variables -----------------------//
+
+
+var canvas;
+var ctx;
+var w = 1000;
+var h = 800;
+var coloursArc = [50, 30];
+
+
+//--------------------- executable code ----------------------//
+
+
+setUpCanvas(); //displays canvas
+
+
+var cloud1 ={
+"x": -250,
+"y": 200}
+
+var cloud2 ={
+"x": 50,
+"y": 0}
+
+var cloud3 ={
+"x": 400,
+"y": 120}
+
+var cloud4 ={
+"x": 750,
+"y": 50}
+
+
+function drawCloud(cld){
+    cloud(cld.x, cld.y)
+}
+
+drawCloud(cloud1);
+drawCloud(cloud2);
+drawCloud(cloud3);
+drawCloud(cloud4);
+    
+//-------------------------
+
+var star = {
+"point1x": 135,
+"point1y": 345,
+    "point2x": 305,
+    "point2y": 5,
+"point3x": 475,
+"point3y": 345,
+    "point4x": 105,
+    "point4y": 105,
+"point5x": 505,
+"point5y": 105
+}
+
+
+var iceCream = {
+    
+    "x": 525,
+    "y": 400,
+    "radius": 185,
+    "numberOfDrips": 6,
+    "colour": "#ff6699"
+}
+
+
+var cone = {
+    "x":350,
+    "y":480,
+    "w":350,
+    "h":500
+}
+
+
+function drawCone(cone){
+    tri(cone.x, cone.y, cone.w, cone.h);
+}
+
+
+
+function drawIceCream(iceCream, cone){
+
+    arc(iceCream.x, iceCream.y, iceCream.radius, iceCream.colour);
+
+    drawCone(cone);
+
+    for(var i=0;  i<iceCream.numberOfDrips; i++){
+        arc((i*60)+375,480,35, iceCream.colour);
+    }
+}
+
+
+drawIceCream(iceCream, cone);
+
+
+function drawRandomStars(){
+    for(var i=0;  i<10; i++){
+        drawStar(star);
+    }
+}
+
+
+drawRandomStars()
+
+
+//---------------------
+
+
+var favFlavour = [];
+favFlavour.push("vanilla");
+favFlavour.push("chocolate");
+favFlavour.push("strawberry");
+favFlavour.push("cookie dough");
+
+{console.log("What's your favourite ice cream flavour?")};
+
+console.log(favFlavour);
+
+console.log("My favorite ice cream flavour is "+favFlavour[2]+ "!" );
+
+
+
+//----------------------- FUNCTIONS -------------------------//
+
+
+function getRandomFillStyle(){
+    var clr = randi(360);
+    return "hsla(" + clr +  ", 100%, 50%, 0.5)";
+}
+
+
+//-------------------------
+
+
+function drawStar(s){
+
+    var m = 0.2/* rand (0.5)*/;
+    var offsetx = randi(220)+370;
+    var offsety = randi(220)+240;
+
+    ctx.beginPath();
+    ctx.moveTo(s.point1x*m+offsetx, s.point1y*m+offsety);
+    ctx.lineTo(s.point2x*m+offsetx, s.point2y*m+offsety);
+    ctx.lineTo(s.point3x*m+offsetx, s.point3y*m+offsety);
+    ctx.lineTo(s.point4x*m+offsetx, s.point4y*m+offsety);
+    ctx.lineTo(s.point5x*m+offsetx, s.point5y*m+offsety);
+    ctx.lineTo(s.point1x*m+offsetx, s.point1y*m+offsety);
+
+    ctx.fillStyle = getRandomFillStyle();
+    ctx.fill();
+}
+
+
+//-------------------------
+
+
+
+function tri(x,y,w,h){
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x+w, y);
+    ctx.lineTo(x+w/2, y+h);
+    ctx.lineTo(x, y);
+    ctx.fillStyle = "#e6c279";
+    ctx.fill();
+}
+
+
+//-------------------------
+
+
+function arc(x,y,r,c){ //circle
+    ctx.beginPath();
+    ctx.arc(x,y,r,0, Math.PI*2);
+    ctx.fillStyle = c;
+    ctx.fill();
+}
+
+
+//-------------------------
+
+
+function cloud(x,y){
+    
+    var cloudColour = '#ffffff';
+    var sec = new Date().getSeconds();
+
+// remainder operator within if statement
+
+    if(sec%2==0){
+        cloudColour= '#b3b3b3';
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(x+170, y+80);
+    ctx.bezierCurveTo(x+130, y+100, x+130, y+150, x+230, y+150);
+    ctx.bezierCurveTo(x+250, y+180, x+320, y+180, x+340, y+150);
+    ctx.bezierCurveTo(x+420, y+150, x+420, y+120, x+390, y+100);
+    ctx.bezierCurveTo(x+430, y+40, x+370, y+30, x+340, y+50);
+    ctx.bezierCurveTo(x+320, y+5, x+250, y+20, x+250, y+50);
+    ctx.bezierCurveTo(x+200, y+5, x+150, y+20, x+170, y+80);
+    ctx.closePath();
+    ctx.lineWidth = 5;
+    ctx.fillStyle = cloudColour;
+    ctx.fill();
+}
+
+
+//-------------------------
+
+
+function randi(r){
+    var result = Math.floor(Math.random()*r)
+    return result
+}
+
+
+//-------------------------
+
+
+function rand(r){
+    return Math.random()*r
+}
+
+
+//-------------------------
+
+
+function setUpCanvas(){
+    canvas = document.querySelector("#myCanvas"); //links canvas to html
+    ctx = canvas.getContext("2d");
+    canvas.width = w;
+    canvas.height = h;
+    canvas.style.border = "8px solid pink";
+    ctx.fillStyle = "#dbeaf0";
+    ctx.fillRect(0, 0, w, h);
+}
+
+
+//----------------------------------------------------------//
+
+
+console.log("This is assignement 2")
+
+
+//-------------------------REFERENCES------------------------/
+
+//https://stackoverflow.com/questions/19541192/how-to-draw-cloud-shape-in-html5-canvas
+
+//https://www.w3schools.com/js/js_dates.asp
+
+//https://www.w3schools.com/colors/colors_picker.asp
